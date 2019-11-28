@@ -1,0 +1,21 @@
+﻿#pragma kernel MapsMultiply
+
+RWStructuredBuffer<float> Result;
+RWStructuredBuffer<float> Maps;
+
+
+int sizeX;
+int mapCount;
+uint mapSize;
+
+[numthreads(1,1,1)]
+void MapsMultiply (uint3 id : SV_DispatchThreadID){
+
+    Result[id.x + id.z * sizeX] = Maps[id.x + id.z * sizeX];
+
+    for (int i = 1; i < mapCount; i++)
+    {
+        Result[id.x + id.z * sizeX] *= Maps[id.x + id.z * sizeX + mapSize * i];
+    }
+    
+}
